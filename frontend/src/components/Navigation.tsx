@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Home, User, Code, Mail, Shield, Zap } from 'lucide-react';
+import { Menu, X, Home, User, Code, Mail, Shield, Zap, Star, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 /**
@@ -25,7 +25,9 @@ const Navigation: React.FC = () => {
     { id: 'hero', label: 'Hero', icon: Home },
     { id: 'about', label: 'About', icon: User },
     { id: 'skills', label: 'Skills', icon: Zap },
+    { id: 'services', label: 'Services', icon: Settings },
     { id: 'projects', label: 'Projects', icon: Code },
+    { id: 'pricing', label: 'Pricing', icon: Star },
     { id: 'contact', label: 'Contact', icon: Mail },
   ];
 

@@ -26,7 +26,7 @@ const AIAssistant: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hi! I'm Alex's AI assistant. I can help you learn more about his work, skills, or suggest project ideas. What would you like to know?",
+      text: "Hi! I'm Dinesh's AI assistant. I can help you learn more about his work, skills, or suggest project ideas. What would you like to know?",
       isUser: false,
       timestamp: new Date()
     }
@@ -36,10 +36,10 @@ const AIAssistant: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const suggestions = [
-    { icon: Code, text: "Show me Alex's projects", category: "projects" },
-    { icon: Lightbulb, text: "What technologies does Alex use?", category: "skills" },
-    { icon: MessageCircle, text: "How can I contact Alex?", category: "contact" },
-    { icon: Sparkles, text: "What makes Alex unique?", category: "about" }
+    { icon: Code, text: "Show me Dinesh's projects", category: "projects" },
+    { icon: Lightbulb, text: "What technologies does Dinesh use?", category: "skills" },
+    { icon: MessageCircle, text: "How can I contact Dinesh?", category: "contact" },
+    { icon: Sparkles, text: "What makes Dinesh unique?", category: "about" }
   ];
 
   // AI Response Generator (Mock intelligent responses)
@@ -47,27 +47,27 @@ const AIAssistant: React.FC = () => {
     const lowerMessage = userMessage.toLowerCase();
     
     if (lowerMessage.includes('project') || lowerMessage.includes('work') || lowerMessage.includes('portfolio')) {
-      return "Alex has worked on 50+ projects including modern web applications, mobile apps, and AI-powered tools. His portfolio showcases expertise in React, TypeScript, Next.js, and innovative UI/UX design. Would you like me to highlight a specific project type?";
+      return "Dinesh has worked on 50+ projects including modern web applications, mobile apps, and AI-powered tools. His portfolio showcases expertise in React, TypeScript, Next.js, and innovative UI/UX design. Would you like me to highlight a specific project type?";
     }
     
     if (lowerMessage.includes('skill') || lowerMessage.includes('technology') || lowerMessage.includes('tech')) {
-      return "Alex specializes in:\n• Frontend: React, TypeScript, Next.js, Tailwind CSS\n• Backend: Node.js, Python, PostgreSQL\n• Mobile: React Native, Flutter\n• AI/ML: TensorFlow, OpenAI APIs\n• Design: Figma, Adobe Creative Suite\n\nHe's passionate about emerging technologies and AI integration!";
+      return "Dinesh specializes in:\n• Frontend: React, TypeScript, Next.js, Tailwind CSS\n• Backend: Node.js, Python, PostgreSQL\n• Mobile: React Native, Flutter\n• AI/ML: TensorFlow, OpenAI APIs\n• Design: Figma, Adobe Creative Suite\n\nHe's passionate about emerging technologies and AI integration!";
     }
     
     if (lowerMessage.includes('contact') || lowerMessage.includes('reach') || lowerMessage.includes('hire')) {
-      return "You can reach Alex through:\n• Email: alex@example.com\n• LinkedIn: /in/alexsmith\n• GitHub: /alexsmith\n\nHe's currently available for freelance projects and full-time opportunities. Feel free to reach out for collaborations!";
+      return "You can reach Dinesh through:\n• Email: dinesh@example.com\n• LinkedIn: /in/dineshts\n• GitHub: /dineshts\n\nHe's currently available for freelance projects and full-time opportunities. Feel free to reach out for collaborations!";
     }
     
     if (lowerMessage.includes('experience') || lowerMessage.includes('background')) {
-      return "Alex has 3+ years of professional development experience, specializing in creating innovative digital solutions. He started coding at 16 and has since worked with startups and enterprises, always focusing on user-centric design and cutting-edge technology.";
+      return "Dinesh has 3+ years of professional development experience, specializing in creating innovative digital solutions. He started coding at 16 and has since worked with startups and enterprises, always focusing on user-centric design and cutting-edge technology.";
     }
     
     if (lowerMessage.includes('unique') || lowerMessage.includes('different') || lowerMessage.includes('special')) {
-      return "What sets Alex apart:\n• AI-first approach to development\n• Obsession with user experience\n• Rapid prototyping and iteration\n• Strong design sensibility\n• Continuous learning mindset\n\nHe combines technical expertise with creative vision to build truly exceptional products!";
+      return "What sets Dinesh apart:\n• AI-first approach to development\n• Obsession with user experience\n• Rapid prototyping and iteration\n• Strong design sensibility\n• Continuous learning mindset\n\nHe combines technical expertise with creative vision to build truly exceptional products!";
     }
     
     // Default response with suggestions
-    return "That's a great question! I'd love to help you learn more about Alex. You could ask me about his projects, technical skills, experience, or how to get in touch with him. What interests you most?";
+    return "That's a great question! I'd love to help you learn more about Dinesh. You could ask me about his projects, technical skills, experience, or how to get in touch with him. What interests you most?";
   };
 
   const scrollToBottom = () => {
@@ -145,7 +145,7 @@ const AIAssistant: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold">AI Assistant</h3>
-                  <p className="text-xs text-muted-foreground">Ask me anything about Alex</p>
+                  <p className="text-xs text-muted-foreground">Ask me anything about Dinesh</p>
                 </div>
               </div>
               <button

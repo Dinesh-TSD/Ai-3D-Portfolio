@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown, Code, Sparkles, Linkedin, Instagram, Github } from 'lucide-react';
+import { ChevronDown, Code, Sparkles } from 'lucide-react';
+import { FaLinkedin, FaInstagram, FaGithub, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Laptop3D from '../components/Laptop3D';
 import { useTypewriter } from '../hooks/useTypewriter';
@@ -150,20 +151,61 @@ const Hero: React.FC = () => {
             
             {/* Social Icons */}
             <motion.div
-              className="flex gap-10 justify-center my-6 "
+              className="flex gap-10 justify-center my-6"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.55 }}
             >
-              <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                <Linkedin className="w-7 h-7 text-primary hover:text-primary-light transition-colors duration-300 hover:scale-110" />
-              </a>
-              <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                <Instagram className="w-7 h-7 text-primary hover:text-primary-light transition-colors duration-300 hover:scale-110" />
-              </a>
-              <a href="https://github.com/" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                <Github className="w-7 h-7 text-primary hover:text-primary-light transition-colors duration-300 hover:scale-110" />
-              </a>
+              <motion.a 
+                href="https://linkedin.com/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="LinkedIn"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <FaLinkedin className="w-7 h-7 text-primary hover:text-primary-light transition-colors duration-300" />
+              </motion.a>
+              <motion.a 
+                href="https://instagram.com/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="Instagram"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <FaInstagram className="w-7 h-7 text-primary hover:text-primary-light transition-colors duration-300" />
+              </motion.a>
+              <motion.a 
+                href="https://github.com/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="GitHub"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <FaGithub className="w-7 h-7 text-primary hover:text-primary-light transition-colors duration-300" />
+              </motion.a>
+              <motion.a 
+                href="https://twitter.com/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="Twitter"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <FaTwitter className="w-7 h-7 text-primary hover:text-primary-light transition-colors duration-300" />
+              </motion.a>
+              <motion.a 
+                href="https://youtube.com/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="YouTube"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <FaYoutube className="w-7 h-7 text-primary hover:text-primary-light transition-colors duration-300" />
+              </motion.a>
             </motion.div>
 
             {/* Stats */}
