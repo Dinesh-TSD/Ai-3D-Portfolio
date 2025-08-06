@@ -141,6 +141,13 @@ const About: React.FC = () => {
                 always pushing the boundaries of what's possible.
               </p>
             </div>
+
+            <div className="glass p-8 rounded-2xl hover-lift">
+              <h3 className="text-xl font-bold mb-4 text-gradient">My Dream</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                My dream is to bridge the gap between imagination and innovation — to build digital experiences that not only function but feel alive. I want to create AI-integrated, 3D-powered applications that solve real problems, empower people, and make technology more human.
+              </p>
+            </div>
           </motion.div>
 
           {/* Values Grid */}
