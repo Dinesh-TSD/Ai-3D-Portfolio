@@ -113,7 +113,12 @@ const Hero: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8 }}
             >
-              <button className="glass px-8 py-4 rounded-lg hover-lift group transition-all duration-300 border border-primary/20 hover:border-primary/40">
+              <button className="glass px-8 py-4 rounded-lg hover-lift group transition-all duration-300 border border-primary/20 hover:border-primary/40"
+                onClick={() => {
+                  const projectsSection = document.getElementById('projects');
+                  projectsSection?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
                 <div className="flex items-center gap-2">
                   <Code className="w-5 h-5 text-primary" />
                   <span className="font-semibold">View My Work</span>

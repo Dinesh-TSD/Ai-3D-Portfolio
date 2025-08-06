@@ -2,11 +2,11 @@ import React from 'react';
 import Navigation from '../components/Navigation';
 import Hero from './Hero';
 import About from './About';
-import Skills from '../components/Skills';
-import Projects from '../components/Projects';
-import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import AIAssistant from '../components/AIAssistant';
+import Skills from './Skills';
+import Projects from './Projects';
+import Contact from './Contact';
 
 /**
  * Main Portfolio Page
