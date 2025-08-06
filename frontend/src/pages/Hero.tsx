@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown, Code, Sparkles, Linkedin, Instagram, Github } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import Laptop3D from '../components/Laptop3D';
 import { useTypewriter } from '../hooks/useTypewriter';
 
@@ -113,19 +114,23 @@ const Hero: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8 }}
             >
-              <button className="glass px-8 py-4 rounded-lg hover-lift group transition-all duration-300 border border-primary/20 hover:border-primary/40"
-                onClick={() => {
-                  const projectsSection = document.getElementById('projects');
-                  projectsSection?.scrollIntoView({ behavior: 'smooth' });
-                }}
+              <Link 
+                to="/dream-projects"
+                className="glass px-8 py-4 rounded-lg hover-lift group transition-all duration-300 border border-primary/20 hover:border-primary/40"
               >
                 <div className="flex items-center gap-2">
                   <Code className="w-5 h-5 text-primary" />
                   <span className="font-semibold">Dream Projects</span>
                 </div>
-              </button>
+              </Link>
 
-              <button className="glass px-8 py-4 rounded-lg hover-lift transition-all duration-300 border border-glass-border hover:border-secondary/40">
+              <button 
+                className="glass px-8 py-4 rounded-lg hover-lift transition-all duration-300 border border-glass-border hover:border-secondary/40"
+                onClick={() => {
+                  const contactSection = document.getElementById('contact');
+                  contactSection?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
                 <span className="font-semibold">Get In Touch</span>
               </button>
 

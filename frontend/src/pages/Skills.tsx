@@ -70,14 +70,27 @@ const Skills: React.FC = () => {
         {/* Header */}
         <motion.div
           className="text-center mb-16"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-gradient mb-4">
-            Skills & Technologies
-          </h1>
-          <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
+          <motion.div 
+            className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-6"
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
+            <FaBrain className="w-4 h-4 text-primary" />
+            <span className="text-sm text-muted-foreground">My Skills</span>
+          </motion.div>
+          
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <span className="text-gradient">Skills & Technologies</span> I Master
+          </h2>
+          
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
             A comprehensive overview of the technologies and tools I use to bring ideas to life
           </p>
         </motion.div>
