@@ -121,7 +121,7 @@ const Hero: React.FC = () => {
               >
                 <div className="flex items-center gap-2">
                   <Code className="w-5 h-5 text-primary" />
-                  <span className="font-semibold">View My Work</span>
+                  <span className="font-semibold">Dream Projects</span>
                 </div>
               </button>
 

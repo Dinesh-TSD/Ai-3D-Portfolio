@@ -76,11 +76,16 @@
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground font-sans antialiased;
     background: hsl(var(--background));
     background-image: var(--gradient-hero);
     min-height: 100vh;
+    overflow-x: hidden;
   }
 
   /* Scrollbar styling */
@@ -99,6 +104,16 @@
   
   ::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--primary-light));
+  }
+
+  /* Ensure sections are properly scrollable */
+  section {
+    scroll-margin-top: 20px; /* Reduced from 80px to 20px */
+  }
+
+  /* Smooth scrolling for anchor links */
+  html {
+    scroll-padding-top: 20px; /* Reduced from 80px to 20px */
   }
 }
 
