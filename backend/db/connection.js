@@ -6,7 +6,7 @@ export async function connectDB() {
     if (!mongoUrl) {
         throw new Error("MONGODB_URL is not defined in environment variables");
     }
-
+ 
     try {
         await connect(mongoUrl);
         console.log("✅ Connected to MongoDB");

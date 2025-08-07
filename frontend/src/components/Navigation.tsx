@@ -160,4 +160,20 @@ const Navigation: React.FC = () => {
   );
 };
 
+// Admin Dashboard Navbar (fixed, glassmorphic, for admin pages only)
+export const AdminNavbar: React.FC<{ onLogout?: () => void; user?: any }> = ({ onLogout, user }) => (
+  <nav className="glass glass-border border-b border-slate-700/50 p-4 flex items-center justify-between rounded-lg fixed top-0 left-0 right-0 z-40" style={{height:'4rem'}}>
+    <div className="flex items-center gap-3">
+      <span className="text-xl font-bold text-gradient">Admin Dashboard</span>
+      {user && <span className="text-sm text-muted-foreground ml-2">Welcome back, {user.profile?.firstName}</span>}
+    </div>
+    {onLogout && (
+      <button onClick={onLogout} className="flex items-center gap-2 px-4 py-2 glass rounded-lg hover:bg-red-900/40 text-red-400 border border-red-400/20 transition-colors">
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1" /></svg>
+        <span>Logout</span>
+      </button>
+    )}
+  </nav>
+);
+
 export default Navigation;

@@ -12,10 +12,19 @@ const AdminLogin: React.FC = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [adminExists, setAdminExists] = useState(false);
-  const [adminInfo, setAdminInfo] = useState<any>(null);
+  const [adminInfo, setAdminInfo] = useState<any>(null); 
 
+  // On mount, check admin status and redirect if already logged in
   useEffect(() => {
-    checkAdminStatus();
+    const check = async () => {
+      const token = localStorage.getItem('adminToken');
+      if (token) {
+        window.location.href = '/admin/dashboard';
+        return;
+      }
+      await checkAdminStatus();
+    };
+    check();
   }, []);
 
   const checkAdminStatus = async () => {
@@ -23,7 +32,6 @@ const AdminLogin: React.FC = () => {
       const response = await fetch('http://localhost:5000/api/auth/admin/exists');
       const data = await response.json();
       setAdminExists(data.adminExists);
-
       if (data.adminExists) {
         const adminResponse = await fetch('http://localhost:5000/api/auth/admin/info');
         const adminData = await adminResponse.json();
@@ -48,7 +56,6 @@ const AdminLogin: React.FC = () => {
     setLoading(true);
     setError('');
     setSuccess('');
-
     try {
       const response = await fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
@@ -57,16 +64,11 @@ const AdminLogin: React.FC = () => {
         },
         body: JSON.stringify(formData)
       });
-
       const data = await response.json();
-
       if (response.ok) {
         setSuccess('Login successful! Redirecting to admin dashboard...');
-        // Store token in localStorage
         localStorage.setItem('adminToken', data.token);
         localStorage.setItem('adminUser', JSON.stringify(data.user));
-        
-        // Redirect to admin dashboard after 2 seconds
         setTimeout(() => {
           window.location.href = '/admin/dashboard';
         }, 2000);
@@ -85,7 +87,6 @@ const AdminLogin: React.FC = () => {
       setLoading(true);
       setError('');
       setSuccess('');
-
       try {
         const response = await fetch('http://localhost:5000/api/auth/register', {
           method: 'POST',
@@ -94,15 +95,13 @@ const AdminLogin: React.FC = () => {
           },
           body: JSON.stringify({
             username: 'admin',
-            email: 'dinesh@example.com',
-            password: 'Admin123!',
+            email: 'dineshtsd@gmail.com',
+            password: 'Tsd12345',
             firstName: 'Dinesh',
             lastName: 'TS'
           })
         });
-
         const data = await response.json();
-
         if (response.ok) {
           setSuccess('Admin account created successfully! You can now login.');
           setAdminExists(true);
@@ -119,13 +118,27 @@ const AdminLogin: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background Effects (Hero style) */}
+      <div className="absolute inset-0 bg-gradient-hero" />
+      <div className="absolute inset-0 bg-gradient-radial opacity-30" />
+      {/* Floating Background Elements */}
       <motion.div
-        className="w-full max-w-md"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
+        className="absolute top-20 left-20 w-4 h-4 bg-primary rounded-full blur-sm"
+        animate={{ y: [-20, 20, -20], opacity: [0.3, 0.8, 0.3] }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <motion.div
+        className="absolute bottom-32 right-16 w-6 h-6 bg-secondary rounded-full blur-sm"
+        animate={{ y: [20, -20, 20], opacity: [0.4, 0.9, 0.4] }}
+        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+      />
+      <motion.div
+        className="absolute top-1/3 right-1/4 w-2 h-2 bg-accent rounded-full blur-sm"
+        animate={{ x: [-10, 10, -10], y: [-10, 10, -10], opacity: [0.2, 0.7, 0.2] }}
+        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+      />
+      <div className="w-full max-w-md z-10">
         {/* Header */}
         <motion.div
           className="text-center mb-8"
@@ -137,19 +150,15 @@ const AdminLogin: React.FC = () => {
             <Lock className="w-4 h-4 text-primary" />
             <span className="text-sm text-muted-foreground">Admin Access</span>
           </div>
-          
           <h1 className="text-3xl md:text-4xl font-bold mb-4">
             <span className="text-gradient">Admin Login</span>
           </h1>
-          
           <p className="text-lg text-muted-foreground">
-            {adminExists 
+            {adminExists
               ? 'Enter your credentials to access the admin dashboard'
-              : 'No admin account found. Create the first admin account.'
-            }
+              : 'No admin account found. Create the first admin account.'}
           </p>
         </motion.div>
-
         {/* Admin Info */}
         {adminExists && adminInfo && (
           <motion.div
@@ -171,7 +180,6 @@ const AdminLogin: React.FC = () => {
             </div>
           </motion.div>
         )}
-
         {/* Error/Success Messages */}
         {error && (
           <motion.div
@@ -185,7 +193,6 @@ const AdminLogin: React.FC = () => {
             </div>
           </motion.div>
         )}
-
         {success && (
           <motion.div
             className="glass glass-border border-green-500/20 p-4 mb-6 rounded-lg"
@@ -198,8 +205,7 @@ const AdminLogin: React.FC = () => {
             </div>
           </motion.div>
         )}
-
-        {/* Login Form */}
+        {/* Login Form or Create Admin */}
         {adminExists ? (
           <motion.form
             onSubmit={handleSubmit}
@@ -228,7 +234,6 @@ const AdminLogin: React.FC = () => {
                   />
                 </div>
               </div>
-
               {/* Password Field */}
               <div>
                 <label htmlFor="password" className="block text-sm font-medium text-muted-foreground mb-2">
@@ -255,7 +260,6 @@ const AdminLogin: React.FC = () => {
                   </button>
                 </div>
               </div>
-
               {/* Submit Button */}
               <motion.button
                 type="submit"
@@ -269,7 +273,6 @@ const AdminLogin: React.FC = () => {
             </div>
           </motion.form>
         ) : (
-          /* Create Admin Button */
           <motion.div
             className="glass glass-border p-6 rounded-lg text-center"
             initial={{ opacity: 0, y: 20 }}
@@ -290,7 +293,6 @@ const AdminLogin: React.FC = () => {
             </motion.button>
           </motion.div>
         )}
-
         {/* Back to Portfolio */}
         <motion.div
           className="text-center mt-6"
@@ -305,8 +307,8 @@ const AdminLogin: React.FC = () => {
             ← Back to Portfolio
           </a>
         </motion.div>
-      </motion.div>
-    </div>
+      </div>
+    </section>
   );
 };
 
