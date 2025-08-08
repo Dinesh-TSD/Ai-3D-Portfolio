@@ -1,6 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown, Code, Sparkles, Linkedin, Instagram, Github } from 'lucide-react';
+import { ChevronDown, Code, Sparkles } from 'lucide-react';
+import { FaLinkedin, FaInstagram, FaGithub, FaTwitter, FaYoutube } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import Laptop3D from '../components/Laptop3D';
 import { useTypewriter } from '../hooks/useTypewriter';
 
@@ -113,19 +115,23 @@ const Hero: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8 }}
             >
-              <button className="glass px-8 py-4 rounded-lg hover-lift group transition-all duration-300 border border-primary/20 hover:border-primary/40"
-                onClick={() => {
-                  const projectsSection = document.getElementById('projects');
-                  projectsSection?.scrollIntoView({ behavior: 'smooth' });
-                }}
+              <Link 
+                to="/dream-projects"
+                className="glass px-8 py-4 rounded-lg hover-lift group transition-all duration-300 border border-primary/20 hover:border-primary/40"
               >
                 <div className="flex items-center gap-2">
                   <Code className="w-5 h-5 text-primary" />
                   <span className="font-semibold">Dream Projects</span>
                 </div>
-              </button>
+              </Link>
 
-              <button className="glass px-8 py-4 rounded-lg hover-lift transition-all duration-300 border border-glass-border hover:border-secondary/40">
+              <button 
+                className="glass px-8 py-4 rounded-lg hover-lift transition-all duration-300 border border-glass-border hover:border-secondary/40"
+                onClick={() => {
+                  const contactSection = document.getElementById('contact');
+                  contactSection?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
                 <span className="font-semibold">Get In Touch</span>
               </button>
 
@@ -145,20 +151,61 @@ const Hero: React.FC = () => {
             
             {/* Social Icons */}
             <motion.div
-              className="flex gap-10 justify-center my-6 "
+              className="flex gap-10 justify-center my-6"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.55 }}
             >
-              <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                <Linkedin className="w-7 h-7 text-primary hover:text-primary-light transition-colors duration-300 hover:scale-110" />
-              </a>
-              <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                <Instagram className="w-7 h-7 text-primary hover:text-primary-light transition-colors duration-300 hover:scale-110" />
-              </a>
-              <a href="https://github.com/" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                <Github className="w-7 h-7 text-primary hover:text-primary-light transition-colors duration-300 hover:scale-110" />
-              </a>
+              <motion.a 
+                href="https://linkedin.com/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="LinkedIn"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <FaLinkedin className="w-7 h-7 text-primary hover:text-primary-light transition-colors duration-300" />
+              </motion.a>
+              <motion.a 
+                href="https://instagram.com/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="Instagram"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <FaInstagram className="w-7 h-7 text-primary hover:text-primary-light transition-colors duration-300" />
+              </motion.a>
+              <motion.a 
+                href="https://github.com/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="GitHub"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <FaGithub className="w-7 h-7 text-primary hover:text-primary-light transition-colors duration-300" />
+              </motion.a>
+              <motion.a 
+                href="https://twitter.com/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="Twitter"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <FaTwitter className="w-7 h-7 text-primary hover:text-primary-light transition-colors duration-300" />
+              </motion.a>
+              <motion.a 
+                href="https://youtube.com/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="YouTube"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <FaYoutube className="w-7 h-7 text-primary hover:text-primary-light transition-colors duration-300" />
+              </motion.a>
             </motion.div>
 
             {/* Stats */}

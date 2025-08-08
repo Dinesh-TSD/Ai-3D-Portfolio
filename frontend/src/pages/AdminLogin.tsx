@@ -1,175 +1,314 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Lock, User, ArrowLeft } from 'lucide-react';
+import { Eye, EyeOff, Lock, User, AlertCircle, CheckCircle } from 'lucide-react';
 
 const AdminLogin: React.FC = () => {
-  const [credentials, setCredentials] = useState({
-    username: '',
+  const [formData, setFormData] = useState({
+    email: '',
     password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const [success, setSuccess] = useState('');
+  const [adminExists, setAdminExists] = useState(false);
+  const [adminInfo, setAdminInfo] = useState<any>(null); 
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
-
-    // Simulate admin authentication
-    // In a real app, this would be an API call
-    setTimeout(() => {
-      if (credentials.username === 'admin' && credentials.password === 'admin123') {
-        // Store admin session
-        localStorage.setItem('adminAuthenticated', 'true');
-        navigate('/admin/dashboard');
-      } else {
-        setError('Invalid credentials. Please try again.');
+  // On mount, check admin status and redirect if already logged in
+  useEffect(() => {
+    const check = async () => {
+      const token = localStorage.getItem('adminToken');
+      if (token) {
+        window.location.href = '/admin/dashboard';
+        return;
       }
-      setIsLoading(false);
-    }, 1000);
+      await checkAdminStatus();
+    };
+    check();
+  }, []);
+
+  const checkAdminStatus = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/admin/exists');
+      const data = await response.json();
+      setAdminExists(data.adminExists);
+      if (data.adminExists) {
+        const adminResponse = await fetch('http://localhost:5000/api/auth/admin/info');
+        const adminData = await adminResponse.json();
+        setAdminInfo(adminData.admin);
+      }
+    } catch (error) {
+      console.error('Error checking admin status:', error);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCredentials({
-      ...credentials,
+    setFormData({
+      ...formData,
       [e.target.name]: e.target.value
     });
+    setError('');
+    setSuccess('');
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    setSuccess('');
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setSuccess('Login successful! Redirecting to admin dashboard...');
+        localStorage.setItem('adminToken', data.token);
+        localStorage.setItem('adminUser', JSON.stringify(data.user));
+        setTimeout(() => {
+          window.location.href = '/admin/dashboard';
+        }, 2000);
+      } else {
+        setError(data.error || 'Login failed');
+      }
+    } catch (error) {
+      setError('Network error. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRegister = async () => {
+    if (!adminExists) {
+      setLoading(true);
+      setError('');
+      setSuccess('');
+      try {
+        const response = await fetch('http://localhost:5000/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            username: 'admin',
+            email: 'dineshtsd@gmail.com',
+            password: 'Tsd12345',
+            firstName: 'Dinesh',
+            lastName: 'TS'
+          })
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setSuccess('Admin account created successfully! You can now login.');
+          setAdminExists(true);
+          setAdminInfo(data.user);
+        } else {
+          setError(data.error || 'Registration failed');
+        }
+      } catch (error) {
+        setError('Network error. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-surface to-background flex items-center justify-center p-4">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background Effects (Hero style) */}
+      <div className="absolute inset-0 bg-gradient-hero" />
+      <div className="absolute inset-0 bg-gradient-radial opacity-30" />
+      {/* Floating Background Elements */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="w-full max-w-md"
-      >
-        {/* Back Button */}
-        <motion.button
-          onClick={() => navigate('/')}
-          className="flex items-center gap-2 text-foreground/70 hover:text-foreground mb-6 transition-colors duration-300"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to Portfolio</span>
-        </motion.button>
-
-        {/* Login Card */}
+        className="absolute top-20 left-20 w-4 h-4 bg-primary rounded-full blur-sm"
+        animate={{ y: [-20, 20, -20], opacity: [0.3, 0.8, 0.3] }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <motion.div
+        className="absolute bottom-32 right-16 w-6 h-6 bg-secondary rounded-full blur-sm"
+        animate={{ y: [20, -20, 20], opacity: [0.4, 0.9, 0.4] }}
+        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+      />
+      <motion.div
+        className="absolute top-1/3 right-1/4 w-2 h-2 bg-accent rounded-full blur-sm"
+        animate={{ x: [-10, 10, -10], y: [-10, 10, -10], opacity: [0.2, 0.7, 0.2] }}
+        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+      />
+      <div className="w-full max-w-md z-10">
+        {/* Header */}
         <motion.div
-          className="glass rounded-2xl p-8 border border-glass-border"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
+          className="text-center mb-8"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
         >
-          <div className="text-center mb-8">
-            <motion.div
-              className="w-16 h-16 glass rounded-full flex items-center justify-center mx-auto mb-4"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <Lock className="w-8 h-8 text-primary" />
-            </motion.div>
-            <h1 className="text-2xl font-bold text-gradient mb-2">Admin Login</h1>
-            <p className="text-foreground/70">Access the admin dashboard</p>
+          <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-4">
+            <Lock className="w-4 h-4 text-primary" />
+            <span className="text-sm text-muted-foreground">Admin Access</span>
           </div>
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Username Field */}
-            <div className="space-y-2">
-              <label htmlFor="username" className="text-sm font-medium text-foreground">
-                Username
-              </label>
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-foreground/50" />
-                <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  value={credentials.username}
-                  onChange={handleInputChange}
-                  className="w-full pl-10 pr-4 py-3 glass rounded-lg border border-glass-border focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-300"
-                  placeholder="Enter username"
-                  required
-                />
-              </div>
-            </div>
-
-            {/* Password Field */}
-            <div className="space-y-2">
-              <label htmlFor="password" className="text-sm font-medium text-foreground">
-                Password
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-foreground/50" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  id="password"
-                  name="password"
-                  value={credentials.password}
-                  onChange={handleInputChange}
-                  className="w-full pl-10 pr-12 py-3 glass rounded-lg border border-glass-border focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-300"
-                  placeholder="Enter password"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-foreground/50 hover:text-foreground transition-colors duration-300"
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
-
-            {/* Error Message */}
-            {error && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-red-500 text-sm bg-red-500/10 p-3 rounded-lg border border-red-500/20"
-              >
-                {error}
-              </motion.div>
-            )}
-
-            {/* Submit Button */}
-            <motion.button
-              type="submit"
-              disabled={isLoading}
-              className="w-full glass px-6 py-3 rounded-lg hover-lift border border-primary/20 hover:border-primary/40 transition-all duration-300 group disabled:opacity-50 disabled:cursor-not-allowed"
-              whileHover={{ scale: isLoading ? 1 : 1.02 }}
-              whileTap={{ scale: isLoading ? 1 : 0.98 }}
-            >
-              <div className="flex items-center justify-center gap-2">
-                {isLoading ? (
-                  <motion.div
-                    className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full"
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                  />
-                ) : (
-                  <Lock className="w-4 h-4 text-primary group-hover:text-primary-light transition-colors duration-300" />
-                )}
-                <span className="font-medium">
-                  {isLoading ? 'Signing in...' : 'Sign In'}
-                </span>
-              </div>
-            </motion.button>
-          </form>
-
-          {/* Demo Credentials */}
-          <div className="mt-6 p-4 glass rounded-lg border border-glass-border">
-            <p className="text-xs text-foreground/70 mb-2">Demo Credentials:</p>
-            <p className="text-xs text-foreground/50">Username: admin</p>
-            <p className="text-xs text-foreground/50">Password: admin123</p>
-          </div>
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">
+            <span className="text-gradient">Admin Login</span>
+          </h1>
+          <p className="text-lg text-muted-foreground">
+            {adminExists
+              ? 'Enter your credentials to access the admin dashboard'
+              : 'No admin account found. Create the first admin account.'}
+          </p>
         </motion.div>
-      </motion.div>
-    </div>
+        {/* Admin Info */}
+        {adminExists && adminInfo && (
+          <motion.div
+            className="glass glass-border p-4 mb-6 rounded-lg"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            <div className="flex items-center gap-3">
+              <CheckCircle className="w-5 h-5 text-green-500" />
+              <div>
+                <p className="font-medium text-white">
+                  Admin: {adminInfo.profile?.firstName} {adminInfo.profile?.lastName}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Username: {adminInfo.username}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+        {/* Error/Success Messages */}
+        {error && (
+          <motion.div
+            className="glass glass-border border-red-500/20 p-4 mb-6 rounded-lg"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div className="flex items-center gap-2 text-red-400">
+              <AlertCircle className="w-4 h-4" />
+              <span>{error}</span>
+            </div>
+          </motion.div>
+        )}
+        {success && (
+          <motion.div
+            className="glass glass-border border-green-500/20 p-4 mb-6 rounded-lg"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div className="flex items-center gap-2 text-green-400">
+              <CheckCircle className="w-4 h-4" />
+              <span>{success}</span>
+            </div>
+          </motion.div>
+        )}
+        {/* Login Form or Create Admin */}
+        {adminExists ? (
+          <motion.form
+            onSubmit={handleSubmit}
+            className="glass glass-border p-6 rounded-lg"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <div className="space-y-4">
+              {/* Email Field */}
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-muted-foreground mb-2">
+                  Email Address
+                </label>
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="w-full pl-10 pr-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-white placeholder-muted-foreground"
+                    placeholder="Enter your email"
+                    required
+                  />
+                </div>
+              </div>
+              {/* Password Field */}
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-muted-foreground mb-2">
+                  Password
+                </label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    className="w-full pl-10 pr-12 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-white placeholder-muted-foreground"
+                    placeholder="Enter your password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-white transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+              {/* Submit Button */}
+              <motion.button
+                type="submit"
+                disabled={loading}
+                className="w-full py-3 px-4 bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-all duration-200 hover-lift"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                {loading ? 'Signing In...' : 'Sign In'}
+              </motion.button>
+            </div>
+          </motion.form>
+        ) : (
+          <motion.div
+            className="glass glass-border p-6 rounded-lg text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <p className="text-muted-foreground mb-4">
+              No admin account exists. Create the first admin account to get started.
+            </p>
+            <motion.button
+              onClick={handleRegister}
+              disabled={loading}
+              className="px-6 py-3 bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-all duration-200 hover-lift"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              {loading ? 'Creating Admin...' : 'Create Admin Account'}
+            </motion.button>
+          </motion.div>
+        )}
+        {/* Back to Portfolio */}
+        <motion.div
+          className="text-center mt-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+        >
+          <a
+            href="/"
+            className="text-muted-foreground hover:text-white transition-colors text-sm"
+          >
+            ← Back to Portfolio
+          </a>
+        </motion.div>
+      </div>
+    </section>
   );
 };
 

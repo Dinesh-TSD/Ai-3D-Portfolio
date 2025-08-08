@@ -5,7 +5,9 @@ import About from './About';
 import Footer from '../components/Footer';
 import AIAssistant from '../components/AIAssistant';
 import Skills from './Skills';
+import Services from './Services';
 import Projects from './Projects';
+import Pricing from './Pricing';
 import Contact from './Contact';
 
 /**
@@ -29,8 +31,14 @@ const Index: React.FC = () => {
         {/* Skills Section */}
         <Skills />
         
+        {/* Services Section */}
+        <Services />
+        
         {/* Projects Showcase */}
         <Projects />
+        
+        {/* Pricing Section */}
+        <Pricing />
         
         {/* Contact Section */}
         <Contact />
