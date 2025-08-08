@@ -41,7 +41,7 @@ const Footer: React.FC = () => {
             >
               <Heart className="w-4 h-4 text-red-400 fill-current" />
             </motion.div>
-            <span>,</span>
+            <span>AI,</span>
             <Code className="w-4 h-4 text-primary" />
             <span>and</span>
             <Coffee className="w-4 h-4 text-amber-400" />
